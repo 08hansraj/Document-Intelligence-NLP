@@ -1,6 +1,5 @@
 from transformers import pipeline
 
-# Mapping from UI language to MarianMT model
 LANGUAGE_MODEL_MAP = {
     "Hindi": "Helsinki-NLP/opus-mt-en-hi",
     "French": "Helsinki-NLP/opus-mt-en-fr",
@@ -8,9 +7,7 @@ LANGUAGE_MODEL_MAP = {
     "Spanish": "Helsinki-NLP/opus-mt-en-es"
 }
 
-# Cache loaded pipelines so we don't reload models repeatedly
 _TRANSLATOR_CACHE = {}
-
 
 def get_translator(target_language: str):
     if target_language not in LANGUAGE_MODEL_MAP:
@@ -19,7 +16,7 @@ def get_translator(target_language: str):
     if target_language not in _TRANSLATOR_CACHE:
         model_name = LANGUAGE_MODEL_MAP[target_language]
         _TRANSLATOR_CACHE[target_language] = pipeline(
-            f"translation_en_to_{model_name.split('-')[-1]}",
+            task="translation",
             model=model_name
         )
 
